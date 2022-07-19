@@ -58,7 +58,7 @@ function New-ProxyCommand {
             }
             $commandText = $(
                 "function $name {"
-                $proxyText -split [System.Environment]::NewLine | ForEach-Object{ "`t$_"}
+                $proxyText -split [System.Environment]::NewLine | ForEach-Object{ "    $_"}
                 "}"
             )
             if (-not $Path) {
