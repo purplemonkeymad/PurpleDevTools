@@ -17,22 +17,32 @@
     New-ProxyCommand -ProxiedCommand Get-Content -Name Get-ModifiedContent -OutFile .\myfile.ps1
     Will save to the specified file the function definition to proxy the command Get-Content. The name of the function in the definition is Get-ModifiedContent.
 
-.PARAMETER ProxiedCommand
+.PARAMETER Command
     The comand to create a proxy function for, either as a string name or a command object.
 .PARAMETER Name
-    The name for the new function.
-.PARAMETER OutFile
-    A destination file for saving the proxy function to. Will do nothing if Name is not specified.
+    The name for the new function. Required to save the function to a file.
+.PARAMETER Path
+    A destination file for saving the proxy function to.
 
+.INPUTS
+    System.String
+    System.Management.Automation.CmdletInfo
+    System.Management.Automation.FunctionInfo
+.OUTPUTS
+    System.String
 #>
 function New-ProxyCommand {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName="TextOut")]
     param (
-        [Parameter(ValueFromPipelineByPropertyName)]
-        [string]$Name,
         [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
-        $ProxiedCommand,
-        $OutFile
+        $Command,
+
+        [Parameter(ValueFromPipelineByPropertyName,ParameterSetName="Name")]
+        [Parameter(Mandatory,ValueFromPipelineByPropertyName,ParameterSetName="File")]
+        [string]$Name,
+
+        [Parameter(Mandatory,ValueFromPipelineByPropertyName,ParameterSetName="File")]
+        [string]$Path
     )
     
     begin {
@@ -41,7 +51,7 @@ function New-ProxyCommand {
     
     process {
         try { 
-            $command = Get-Command $ProxiedCommand -ErrorAction Stop
+            $command = Get-Command $Command -ErrorAction Stop
             $proxyText = [System.Management.Automation.ProxyCommand]::Create($command)
             if (-not $Name) {
                 return $proxyText
@@ -51,10 +61,10 @@ function New-ProxyCommand {
                 $proxyText -split [System.Environment]::NewLine | ForEach-Object{ "`t$_"}
                 "}"
             )
-            if (-not $OutFile) {
+            if (-not $Path) {
                 return ($commandText -join [System.Environment]::NewLine)
             }
-            $commandText | Set-Content $OutFile
+            $commandText | Set-Content $Path
         } catch {
             Write-Error $_
         }
