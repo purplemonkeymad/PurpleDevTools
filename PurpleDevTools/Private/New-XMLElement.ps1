@@ -2,14 +2,14 @@ function New-XMLElement {
     [CmdletBinding()]
     [outputtype([System.xml.XmlElement])]
     param (
-        [xml]$Document,
         [Parameter(Mandatory)]
         [string]$Name,
         [string]$Prefix = '',
         [string]$Namespace = '',
         [hashtable]$Attributes,
         [string]$Innertext,
-        [System.xml.XmlElement[]]$Children
+        [System.xml.XmlElement[]]$Children,
+        [xml]$Document
     )
     
     begin {
