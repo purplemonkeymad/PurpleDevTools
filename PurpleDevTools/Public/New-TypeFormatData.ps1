@@ -153,14 +153,14 @@ function New-TypeFormatData {
                         Write-Error -Message "PropertyName for a group is required." -ErrorAction Stop -TargetObject $Group
                     }
                     # it does not make sense to use a label if you set a custom script.
-                    if ( $_.CustomDisplay ) {
+                    if ( $normalGroup.CustomDisplay ) {
                         # this is the way psreadline does a custom group, so I'm going to copy it.
                         New-XMLElement -Name CustomControl -Children $(
                             New-XMLElement -Name CustomEntries -Children $(
                                 New-XMLElement -Name CustomEntry -Children $(
                                     New-XMLElement -Name CustomItem -Children $(
                                         New-XMLElement -Name ExpressionBinding -Children $(
-                                            New-XMLElement -Name ScriptBlock -Innertext $normalGroup.ScriptBlock.tostring()
+                                            New-XMLElement -Name ScriptBlock -Innertext $normalGroup.CustomDisplay.tostring()
                                         )
                                     )
                                 )
