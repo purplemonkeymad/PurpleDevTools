@@ -22,7 +22,7 @@
 
     The Properties can be specified as a list of strings. This will use the default settings for the property and use the Name as the Display Name.
 
-    Alternativly the Property can be specified as a object with a specific set of properties. If this is used one of the Properties PropertyName or ScriptBlock are required. The list of properties that can be used are:
+    Alternatively the Property can be specified as a object with a specific set of properties. If this is used one of the Properties PropertyName or ScriptBlock are required. The list of properties that can be used are:
     
     * DisplayName  : The shown name of the property, this will be the column header in table views.
     * PropertyName : Property name that the property should use as the source of the value. (Cannot, be used at the same time as ScripbBlock.)
