@@ -10,26 +10,26 @@
 
 .PARAMETER TypeName
 
-    Specify the TypeName(s) for this view, if more that one type is spcified, then a single view is created to target both types.
+    Specify the TypeName(s) for this view, if more that one type is spcified, then a single view is created to target all types.
 
 .PARAMETER View
 
-    Specify the Formatting view that will be used. 
+    Specify the Formatting view that will be used. Table or List.
 
 .PARAMETER Properties
 
-    A list of the properties that will be visible in the View specified.
+    A list of the properties that will be visible by default in the View specified.
 
     The Properties can be specified as a list of strings. This will use the default settings for the property and use the Name as the Display Name.
 
-    Alternatively the Property can be specified as a object with a specific set of properties. If this is used one of the Properties PropertyName or ScriptBlock are required. The list of properties that can be used are:
+    Alternatively the Property can be specified as a object with a specific set of properties. If this is used one of the properties PropertyName or ScriptBlock are required. The list of properties that can be used are:
     
     * DisplayName  : The shown name of the property, this will be the column header in table views.
-    * PropertyName : Property name that the property should use as the source of the value. (Cannot, be used at the same time as ScripbBlock.)
-    * ScriptBlock  : A Script that is used to evaluate the property at dispaly time. (Cannot, be used at the same time as PropertyName.)
-    * Width        : The Width in Charaters for the specified Column (Table Only.)
-    * Alignment    : The alignment of the Value in the specified Column (Table Only.)
-    * Condition    : A script block to determine of the List property should be shown, return true to show the property (List Only.)
+    * PropertyName : Property name that the property should use as the source of the value. (Cannot, be used at the same time as ScriptBlock.)
+    * ScriptBlock  : A Script that is used to evaluate the property at dispaly time. Use $_ or $PSItem to refer to the current object being displayed. (Cannot, be used at the same time as PropertyName.)
+    * Width        : The width in charaters for the specified Column (Table Only.)
+    * Alignment    : The alignment of the Value in the specified Column, eg Left, Right (Table Only.)
+    * Condition    : A script block to determine if the List property should be shown, return true to show the property (List Only.)
 
 .PARAMETER Group
 
@@ -85,8 +85,8 @@ function New-TypeFormatData {
             # we have xml but not a valid schema
             $PSCmdlet.ThrowTerminatingError(
                 ( New-Object System.Management.Automation.ErrorRecord -ArgumentList @(
-                    [System.Management.Automation.RuntimeException]'Existing XML document does not appear to be a class view file.',
-                    'DavesExtras.ClassView.IncorrectSchema',
+                    [System.Management.Automation.RuntimeException]'Existing XML document does not appear to be a format data view file.',
+                    'PurpleDevTools.FormatDataView.IncorrectSchema',
                     [System.Management.Automation.ErrorCategory]::InvalidData,
                     $XML
                     )
@@ -99,7 +99,7 @@ function New-TypeFormatData {
         # check for an existing view for the class
         foreach ($SingleClassName in $TypeName) { 
             foreach ($Node in $XML.SelectSingleNode("//View/ViewSelectedBy[TypeName='$SingleClassName']")) {
-                Write-Error "A view for the class already exists." -TargetObject $SingleClassName -Category ResourceExists
+                Write-Error "A view for the given class already exists." -TargetObject $SingleClassName -Category ResourceExists -ErrorId 'PurpleDevTools.FormatDataView.Exists'
                 return
             }
         }
@@ -150,7 +150,7 @@ function New-TypeFormatData {
                     if ( $normalGroup.PropertyName ) {
                         New-XMLElement -Name PropertyName -Innertext $normalGroup.PropertyName
                     } else {
-                        Write-Error -Message "PropertyName is required." -ErrorAction Stop -TargetObject $Group
+                        Write-Error -Message "PropertyName for a group is required." -ErrorAction Stop -TargetObject $Group
                     }
                     # it does not make sense to use a label if you set a custom script.
                     if ( $_.CustomDisplay ) {
