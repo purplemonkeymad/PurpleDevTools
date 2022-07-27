@@ -1,5 +1,34 @@
 using namespace System.XML
+# I'm aware the irony of this command not using xml help.
 
+<#
+.SYNOPSIS
+    Save the help for a command to a file in XML help format.
+.DESCRIPTION
+    This will save the current help information for a command in a format that can be used for XML Help.
+    It's good for writting help for a command with dynamic parameters as they do not work with the comment based help system.
+    Existing help is not required as PS generates help for any command automatically, this command will fill it out with some example text if that is the case.
+
+.PARAMETER Command
+    The command that help will be retrived for, either as a command object or the name of the command.
+
+.PARAMETER Path
+    File path to save the help to. This can be an existing path. If the file exists the new xml elements will be merged into the existing file.
+
+.PARAMETER Module
+    Specifies a module to use as the source of command names. All commands exported by the module will be attempted to be saved to the file.
+
+.PARAMETER Force
+    Normally the function will not overrride existing help elements in an existing file. Specifiy this to delete existing conflicting elements when a conflict heppends.
+
+.EXAMPLE
+    Save-XMLHelp -Command Get-Content -Path .\mymodule-help.xml
+    This will save the current help for the command Get-Content to the given file.
+
+.EXAMPLE
+    Save-XMLHelp -Module MyModule -Path .\mymodule-help.xml
+    This will save the help for all commands in the loaded module MyModule to the file. If the file is saved into the module, it should act as a valid Helpfile.
+#>
 function Save-XMLHelp {
     [CmdletBinding(DefaultParameterSetName="Command")]
     param (
