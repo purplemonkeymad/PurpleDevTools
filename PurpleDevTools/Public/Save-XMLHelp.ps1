@@ -1,10 +1,10 @@
 using namespace System.XML
 
 function Save-XMLHelp {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName="Command")]
     param (
-        [parameter(Mandatory,ValueFromPipeline,ParameterSetName="Command")]$Command,
-        [Parameter(Mandatory)][ValidateScript({
+        [parameter(Mandatory,ValueFromPipeline,ParameterSetName="Command",Position=0)]$Command,
+        [Parameter(Mandatory,Position=1)][ValidateScript({
             if (Test-Path -Path $_ -IsValid -PathType Leaf){
                 $true
             } else {
