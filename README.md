@@ -3,6 +3,12 @@
 Powershell Development tools for module production.
 These are to help with creation of module itself or for fleshing out features on functions.
 
+## About
+
+I found that there was not much in the way of default features with powershell that assisted with the creation of modules.
+Some features didn't really have tools to create, you just had to manually create and edit the dependent files.
+The commands from this module, are to make or template those features in a simpler fashion.
+
 ## Commands
 
 ### New-TypeFormatData
