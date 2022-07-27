@@ -13,7 +13,7 @@ The commands from this module, are to make or template those features in a simpl
 
 ### New-TypeFormatData
 
-For creating new .format.ps1xml files for the formatting engine.
+For creating new `.format.ps1xml` files for the formatting engine.
 This allows you to easily create table or list formats with specific properties, and even set scripted properties.
 You can point it to a new file or an existing file to add to the existing typenames.
 
