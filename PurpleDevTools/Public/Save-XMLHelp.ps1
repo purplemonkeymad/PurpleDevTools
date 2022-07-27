@@ -33,6 +33,7 @@ function Save-XMLHelp {
     [CmdletBinding(DefaultParameterSetName="Command")]
     param (
         [parameter(Mandatory,ValueFromPipeline,ParameterSetName="Command",Position=0)]$Command,
+        [Parameter(Mandatory,ParameterSetName="Module")][string]$Module,
         [Parameter(Mandatory,Position=1)][ValidateScript({
             if (Test-Path -Path $_ -IsValid -PathType Leaf){
                 $true
@@ -40,7 +41,6 @@ function Save-XMLHelp {
                 throw "The value supplied to Path does not appear to be a valid path."
             }
         })][string]$Path,
-        [Parameter(Mandatory,ParameterSetName="Module")][string]$Module,
         [switch]$Force
     )
     
