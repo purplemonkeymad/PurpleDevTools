@@ -1,7 +1,7 @@
 # PurpleDevTools
 
-Powershell Development tools for module production.  
-These are to help with creating a module it's self or fleshing out features on functions.
+Powershell Development tools for module production.
+These are to help with creation of module itself or for fleshing out features on functions.
 
 ## Commands
 
@@ -20,5 +20,5 @@ This is good for creating functions that extend another function, eg rate limiti
 ## Author
 
 Purple Monkey Mad  
-github.com/purplemonkeymad
+github.com/purplemonkeymad  
 /u/purplemonkemad
