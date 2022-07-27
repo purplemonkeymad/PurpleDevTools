@@ -30,6 +30,8 @@ function Save-XMLHelp {
             $XML = [xml]$Content
 
         } catch {
+            # we do this odd try as conversion errors are terminating but
+            # also not. this means it's a proper terminating error.
             throw
         }
 
@@ -45,6 +47,7 @@ function Save-XMLHelp {
             )
         }
 
+        # This should create a list of all functions in the module
         if ($PSCmdlet.ParameterSetName -eq "Module"){
             $Command = Get-Command -Module $Module
         }
@@ -77,7 +80,7 @@ function Save-XMLHelp {
                 }
             }
 
-
+            # create a blank required node.
             $commandNode = $xml.CreateNode([xmlnodetype]::element,'command','command',$commandNS)
             $commandNode.setAttribute('xmlns:maml',$mamlNS)
             $commandNode.setAttribute('xmlns:dev', $devNS)
