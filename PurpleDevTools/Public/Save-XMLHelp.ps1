@@ -338,6 +338,6 @@ function Save-XMLHelp {
     }
     
     end {
-        $xml.OuterXml -replace '><',">`r`n<" | Set-Content $Path
+        $xml.Save((Get-ExpandedPath $Path))
     }
 }
