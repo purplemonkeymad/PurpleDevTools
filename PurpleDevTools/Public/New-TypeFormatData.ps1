@@ -70,8 +70,11 @@ function New-TypeFormatData {
     begin {
         $XML = if ($Path -and (Test-Path $Path -PathType Leaf) ){
             try {
-                [xml](Get-Content $Path -Raw)
+                [xml](Get-Content $Path -Raw -ErrorAction Stop)
             } catch {
+                # force a read or parse error to be terminating
+                # since a problem with the file means we can't
+                # add stuff to it.
                 throw $_
             }
         } else {
