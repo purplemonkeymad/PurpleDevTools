@@ -23,6 +23,14 @@ Creates a new function form an existing command.
 The function will have the same parameters as the target command, and call the target using a steppable pipeline.
 This is good for creating functions that extend another function, eg rate limiting Invoke-RestMethod or modifying the return values of a command.
 
+### Save-XMLHelp
+
+Creates correctly structured xml help file from the existing function help information.
+XML Help is not checked against a function, so often does not required the module to be imported.
+This speeds up help but also allows all features to be visible on a help page.
+Comment based help does not work with dynamic parameters, so using XML help can solve that issue.
+This exists so that an existing comment based help can be used to generate the xml help, or to just generate a template for you to fill out.
+
 ## Author
 
 Purple Monkey Mad  
