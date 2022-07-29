@@ -1,4 +1,19 @@
+<#
 
+.SYNOPSIS
+Generates a Comment Based Help template from a existing command.
+
+.description
+Generates a template that can be used as a comment based help. It will pull the information from the current session so templates for help-less commands can be created. If help already exists it will try to use that.
+
+.Parameter Name
+The name of the command to generate help for.
+
+.EXAMPLE
+Get-CommentBasedHelp -Name <String>
+Get the help comment for the command specified by the Name parameter.
+
+#>
 function Get-CommentBasedHelp {
     [CmdletBinding()]
     param (
@@ -60,7 +75,12 @@ function Get-CommentBasedHelp {
                 $help.Examples.Example | ForEach-Object {
                     $(
                         '.EXAMPLE'
-                        $_.Code -replace '^PS C:\\>',''
+                        if ($_.Code){
+                            $_.Code -replace '^PS C:\\>',''
+                        }
+                        if ($_.introduction){
+                            $_.introduction.Text -join $DoubleNewLine
+                        }
                         $_.remarks.Text -join $DoubleNewLine
                     ) -join $NewLine
                 }
