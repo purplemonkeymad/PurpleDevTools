@@ -81,7 +81,7 @@ function Get-CommentBasedHelp {
                         if ($_.introduction){
                             $_.introduction.Text -join $DoubleNewLine
                         }
-                        $_.remarks.Text -join $DoubleNewLine
+                        ($_.remarks.Text | where-Object {-not [string]::IsNullOrWhiteSpace($_) }) -join $DoubleNewLine
                     ) -join $NewLine
                 }
             } else {
