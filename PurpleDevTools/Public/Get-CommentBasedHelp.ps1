@@ -65,7 +65,7 @@ function Get-CommentBasedHelp {
                 $help.parameters.parameter | ForEach-Object {
                     $(
                         ".Parameter $($_.Name)"
-                        $_.description.Text -join $DoubleNewLine
+                        ($_.description.Text | where-Object {-not [string]::IsNullOrWhiteSpace($_) }) -join $DoubleNewLine
                     ) -join $NewLine
                 }
             }
@@ -106,7 +106,7 @@ function Get-CommentBasedHelp {
                 $(
                     '.Links'
                     $help.relatedLinks.navigationlink | ForEach-Object {
-                        $_.uri
+                        $_.uri  | where-Object {-not [string]::IsNullOrWhiteSpace($_) }
                     }
                 ) -join $NewLine
             }
