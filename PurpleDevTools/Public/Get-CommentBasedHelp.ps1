@@ -41,7 +41,7 @@ function Get-CommentBasedHelp {
             '<#' # start comment
             # Synopsis should always be in the output
             $(
-                '.SYNOPSIS'
+                '.Synopsis'
                 if ($help.Synopsis -and $help.Synopsis -notmatch "^\r?\n") {
                     $help.Synopsis
                 } else {
@@ -51,7 +51,7 @@ function Get-CommentBasedHelp {
 
             # Description should always be in the output
             $(
-                '.description'
+                '.Description'
                 if ($help.description) {
                     # multiple paras possible so join with double newlines.
                     $help.description.Text -join $DoubleNewLine
@@ -74,7 +74,7 @@ function Get-CommentBasedHelp {
             if ($help.examples) {
                 $help.Examples.Example | ForEach-Object {
                     $(
-                        '.EXAMPLE'
+                        '.Example'
                         if ($_.Code){
                             $_.Code -replace '^PS C:\\>',''
                         }
@@ -87,7 +87,7 @@ function Get-CommentBasedHelp {
             } else {
                 $command.ParameterSets | ForEach-Object {
                     $(
-                        '.EXAMPLE'
+                        '.Example'
                         # we can create the code line from the parameter sets
                         $(
                             $help.Name
