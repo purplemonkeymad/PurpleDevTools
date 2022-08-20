@@ -61,7 +61,7 @@ function Save-XMLHelp {
         } catch {
             # we do this odd try as conversion errors are terminating but
             # also not. this means it's a proper terminating error.
-            throw
+            throw $_
         }
 
         if (-not $xml.helpItems) {
