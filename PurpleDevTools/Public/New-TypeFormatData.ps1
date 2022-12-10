@@ -253,6 +253,7 @@ function New-TypeFormatData {
                 }
                 'wide' {
                     New-XMLElement -Document $XML -Name WideControl -Children $(
+                        New-XMLElement -Name AutoSize
                         New-XMLElement -Name WideEntries -Children $(
                             New-XMLElement -Name WideEntry -Children $(
                                 New-XMLElement -Name WideItem -Children $(
