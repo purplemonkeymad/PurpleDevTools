@@ -260,10 +260,16 @@ function New-TypeFormatData {
                                     if ($firstProp -is [scriptblock]) {
                                         New-XMLElement -Name ScriptBlock -Innertext ($firstProp.tostring())
                                     } else {
-                                        New-XMLElement -Name PropertyName -Innertext $firstProp.PropertyName
-                                    }
-                                    if ($firstProp.Format){
+                                        if ($firstProp.PropertyName){
+                                            New-XMLElement -Name PropertyName -Innertext $firstProp.PropertyName
+                                        } elseif ( $firstProp.ScriptBlock ){
+                                            New-XMLElement -Name ScriptBlock -Innertext $firstProp.ScriptBlock.tostring()
+                                        } else {
+                                            Write-Error -Message "One of the properties, PropertyName or Scriptblock is required." -ErrorAction Stop -TargetObject $_
+                                        }
+                                        if ($firstProp.Format){
                                         New-XMLElement -Name FormatString -Innertext $firstProp.Format
+                                        }
                                     }
                                 )
                             )
