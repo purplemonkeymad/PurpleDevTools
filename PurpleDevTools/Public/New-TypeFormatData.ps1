@@ -55,7 +55,7 @@ function New-TypeFormatData {
         [string[]]$TypeName,
 
         [parameter(Mandatory,ValueFromPipelineByPropertyName)]
-        [validateset('Table','List')]
+        [validateset('Table','List','Wide')]
         [string]$View,
 
         [parameter(Mandatory,ValueFromPipelineByPropertyName)]
@@ -245,6 +245,25 @@ function New-TypeFormatData {
                                                 )
                                             }
                                         )
+                                    }
+                                )
+                            )
+                        )
+                    )
+                }
+                'wide' {
+                    New-XMLElement -Document $XML -Name WideControl -Children $(
+                        New-XMLElement -Name WideEntries -Children $(
+                            New-XMLElement -Name WideEntry -Children $(
+                                New-XMLElement -Name WideItem -Children $(
+                                    $firstProp = $normalProperties | Select-Object -First 1
+                                    if ($firstProp -is [scriptblock]) {
+                                        New-XMLElement -Name ScriptBlock -Innertext ($firstProp.tostring())
+                                    } else {
+                                        New-XMLElement -Name PropertyName -Innertext $firstProp.PropertyName
+                                    }
+                                    if ($firstProp.Format){
+                                        New-XMLElement -Name FormatString -Innertext $firstProp.Format
                                     }
                                 )
                             )
