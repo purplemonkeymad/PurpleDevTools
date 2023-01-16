@@ -8,13 +8,18 @@
 
     Creates the file myfile.ps1xml if it does not exist and populates it with the specified XML view. In the example, this is a table view with 3 properties for the class MyClass.
 
+.EXAMPLE
+    New-ClassFormatData -Path myfile.ps1xml -TypeName MyClass -View Wide -Properties Prop1 -ViewOptions @{WideColumns = 4}
+
+    Creates the file myfile.ps1xml if it does not exist and populates it with the specified XML view. In the example, this is a Wide view with a single property for the class MyClass. It will alwasy show 4 objects per row.
+
 .PARAMETER TypeName
 
     Specify the TypeName(s) for this view, if more that one type is spcified, then a single view is created to target all types.
 
 .PARAMETER View
 
-    Specify the Formatting view that will be used. Table or List.
+    Specify the Formatting view that will be used. Table, List or Wide.
 
 .PARAMETER Properties
 
@@ -30,6 +35,9 @@
     * Width        : The width in charaters for the specified Column (Table Only.)
     * Alignment    : The alignment of the Value in the specified Column, eg Left, Right (Table Only.)
     * Condition    : A script block to determine if the List property should be shown, return true to show the property (List Only.)
+    * Format       : Formats the property value using the given format string. (Wide Only.)
+
+    If the View type was set to Wide, then only first property is used. If you want multiple properties in a Wide view, use a script block to produce the string you want to see.
 
 .PARAMETER Group
 
@@ -47,24 +55,35 @@
 
     If not specified, then an XML document will instead by returned with the view added.
 
+.PARAMETER ViewOptions
+
+    Specify view options that apply to the whole view not just a single propertry of an object. Current options are:
+
+    * [string] NoAutoSize    : Disables autosize for Wide view, if specified the formatting engine uses only the first row for sizing info instead of all items.
+    * [property] Widecolumns : Sets the number of columns for Wide view. This also disables autosize, but allows display after the first row of items.
+
 #>
 function New-TypeFormatData {
     [CmdletBinding()]
     param (
-        [parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [parameter(Mandatory,ValueFromPipelineByPropertyName,Position=0)]
         [string[]]$TypeName,
 
-        [parameter(Mandatory,ValueFromPipelineByPropertyName)]
-        [validateset('Table','List')]
+        [parameter(Mandatory,ValueFromPipelineByPropertyName,Position=1)]
+        [validateset('Table','List','Wide')]
         [string]$View,
 
-        [parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [parameter(Mandatory,ValueFromPipelineByPropertyName,Position=2)]
         $Properties,
 
-        [Parameter(ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName,Position=3)]
         $Group,
 
-        $Path
+        [Parameter(Position=99)]
+        $Path,
+
+        [Parameter()]
+        $ViewOptions
     )
     
     begin {
@@ -245,6 +264,36 @@ function New-TypeFormatData {
                                                 )
                                             }
                                         )
+                                    }
+                                )
+                            )
+                        )
+                    )
+                }
+                'wide' {
+                    New-XMLElement -Document $XML -Name WideControl -Children $(
+                        if (($colNumberOption = $viewOptions | Where-Object WideColumns -gt 0 | Select-Object -First 1)){
+                            New-XMLElement -Name ColumnNumber -Innertext $colNumberOption.WideColumns
+                        } elseif (-not ($ViewOptions -contains 'NoAutoSize')){
+                            New-XMLElement -Name AutoSize
+                        }
+                        New-XMLElement -Name WideEntries -Children $(
+                            New-XMLElement -Name WideEntry -Children $(
+                                New-XMLElement -Name WideItem -Children $(
+                                    $firstProp = $normalProperties | Select-Object -First 1
+                                    if ($firstProp -is [scriptblock]) {
+                                        New-XMLElement -Name ScriptBlock -Innertext ($firstProp.tostring())
+                                    } else {
+                                        if ($firstProp.PropertyName){
+                                            New-XMLElement -Name PropertyName -Innertext $firstProp.PropertyName
+                                        } elseif ( $firstProp.ScriptBlock ){
+                                            New-XMLElement -Name ScriptBlock -Innertext $firstProp.ScriptBlock.tostring()
+                                        } else {
+                                            Write-Error -Message "One of the properties, PropertyName or Scriptblock is required." -ErrorAction Stop -TargetObject $_
+                                        }
+                                        if ($firstProp.Format){
+                                        New-XMLElement -Name FormatString -Innertext $firstProp.Format
+                                        }
                                     }
                                 )
                             )
