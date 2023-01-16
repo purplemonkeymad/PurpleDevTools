@@ -257,7 +257,9 @@ function New-TypeFormatData {
                 }
                 'wide' {
                     New-XMLElement -Document $XML -Name WideControl -Children $(
-                        if (-not ($ViewOptions -contains 'NoAutoSize')){
+                        if (($colNumberOption = $viewOptions | Where-Object WideColumns -gt 0 | Select-Object -First 1)){
+                            New-XMLElement -Name ColumnNumber -Innertext $colNumberOption.WideColumns
+                        } elseif (-not ($ViewOptions -contains 'NoAutoSize')){
                             New-XMLElement -Name AutoSize
                         }
                         New-XMLElement -Name WideEntries -Children $(
