@@ -51,19 +51,20 @@
 function New-TypeFormatData {
     [CmdletBinding()]
     param (
-        [parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [parameter(Mandatory,ValueFromPipelineByPropertyName,Position=0)]
         [string[]]$TypeName,
 
-        [parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [parameter(Mandatory,ValueFromPipelineByPropertyName,Position=1)]
         [validateset('Table','List','Wide')]
         [string]$View,
 
-        [parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [parameter(Mandatory,ValueFromPipelineByPropertyName,Position=2)]
         $Properties,
 
-        [Parameter(ValueFromPipelineByPropertyName)]
+        [Parameter(ValueFromPipelineByPropertyName,Position=3)]
         $Group,
 
+        [Parameter(Position=99)]
         $Path
     )
     
