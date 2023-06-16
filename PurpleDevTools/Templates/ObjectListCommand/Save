@@ -1,0 +1,16 @@
+function <%= $savefunctionname %> {
+    Param(
+        [Parameter()]
+        [<%= $typename %>[]]
+        $InputList = @()
+    )
+    end {
+        $listFile = <%= $listpath %>;
+        if( -not (Test-Path -LiteralPath $listFile)) {
+            # create missing parent folder if the file is missing
+            [void](New-Item -Path (Split-Path $listFile -Parent) -ItemType Directory -Force)
+        }
+
+        $InputList | Export-Clixml -LiteralPath $listFile -Force
+    }
+}

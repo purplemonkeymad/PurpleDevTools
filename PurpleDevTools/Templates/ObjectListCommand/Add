@@ -1,0 +1,57 @@
+using namespace System.Collections.Generic
+<#
+.SYNOPSIS
+    Add a new <%= $Noun %>.
+.DESCRIPTION
+    A longer description of the function, its purpose, common use cases, etc.
+<% #  generic help parameter for each param
+    $Parameters | Each { -%>
+.PARAMETER <%= $_.name %>
+    Specify the <%= $_.name %> of type <%= $_.propertytype.fullname %>.
+<% } -%>
+.NOTES
+    Information or caveats about the function e.g. 'This function is not supported in Linux'
+.LINK
+    Specify a URI to a help page, this will show when Get-Help -Online is used.
+.EXAMPLE
+    <%= $addfunctionname %>
+    Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+#>
+function <%= $addfunctionname %> {
+    Param(
+<%
+        # generate a param block. Each param should be optional unless it is the idenity prop
+        # then make it mandatory
+
+        $Parameters | Each {
+        -%>
+            # Parameter: <%= $_.name %>
+            [Parameter(<%= if ($_.name -eq $IdentityPropertyName) { 'Mandatory,' } %>ValueFromPipelineByPropertyName)]
+            [<%=
+            # we are using the full name here as it's hard to know any types before hand.
+            $_.propertytype.fullname
+            %>]
+            $<%= $_.name %><% } -Join ",`n" -%>
+
+    )
+    begin {
+        [List[<%= $typename %>]]$currentSettings = <%= $getfunctionname %>
+        if (-not $currentSettings){
+            $currentSettings = [List[<%= $typename %>]]@()
+        }
+    }
+    process {
+        if ($<%= if ([string]::IsNullOrWhiteSpace($IdentityPropertyName)) { 'false' } else { 'true' } %>) {
+            if ( $currentSettings | Where-Object <%= $IdentityPropertyName %> -like $<%= $IdentityPropertyName %> ) {
+                Write-Error "The <%= $Noun %> with Identity: $<%= $IdentityPropertyName %>, already exists."
+                return
+            }
+        }
+
+        $newobject = <%= $newfunctionname %> @PSBoundParameters
+        $currentSettings.Add($newobject)
+    }
+    end {
+        <%= $savefunctionname %> -InputList $currentSettings
+    }
+}

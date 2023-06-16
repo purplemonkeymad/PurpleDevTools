@@ -1,0 +1,58 @@
+using namespace System.Collections.Generic
+<#
+.SYNOPSIS
+    Update the value of a given <%= $Noun %>.
+.DESCRIPTION
+    A longer description of the function, its purpose, common use cases, etc.
+<% #  generic help parameter for each param
+    $Parameters | Each { -%>
+.PARAMETER <%= $_.name %>
+    Specify the <%= $_.name %> of type <%= $_.propertytype.fullname %>.
+<% } -%>
+.NOTES
+    Information or caveats about the function e.g. 'This function is not supported in Linux'
+.LINK
+    Specify a URI to a help page, this will show when Get-Help -Online is used.
+.EXAMPLE
+    <%= $addfunctionname %>
+    Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+#>
+function <%= $setfunctionname %> {
+    Param(
+<%
+        # generate a param block. Search param shoudl be optional unless it is the idenity prop
+        # then make it mandatory
+
+        $Parameters | Each {
+        -%>
+            # Parameter: <%= $_.name %>
+            [Parameter(<%= if ($_.name -eq $IdentityPropertyName) { 'Mandatory,' } %>ValueFromPipelineByPropertyName)]
+            [<%=
+            # we are using the full name here as it's hard to know any types before hand.
+            $_.propertytype.fullname
+            %>]
+            $<%= $_.name %><% } -Join ",`n" -%>
+
+    )
+    begin {
+        [List[<%= $typename %>]]$currentSettings = <%= $getfunctionname %>
+        if (-not $currentSettings){
+            $currentSettings = [List[<%= $typename %>]]@()
+        }
+    }
+    process {
+        $newobject = $currentSettings | Where-Object <%= $IdentityPropertyName %> -eq $<%= $IdentityPropertyName %>
+        foreach($Param in $PSBoundParameters.GetEnumerator()){
+            if ($Param.Key -eq <%= "'" + $IdentityPropertyName + "'" %>){
+                continue
+            }
+
+            $newobject.($Param.Key) = $Param.Value
+        }
+
+        # object updated by reference so should be ok to just save what we have.
+    }
+    end {
+        <%= $savefunctionname %> -InputList $currentSettings
+    }
+}
