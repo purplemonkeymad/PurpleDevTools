@@ -41,13 +41,13 @@ function <%= $addfunctionname %> {
         }
     }
     process {
-        if ($<%= if ([string]::IsNullOrWhiteSpace($IdentityPropertyName)) { 'false' } else { 'true' } %>) {
-            if ( $currentSettings | Where-Object <%= $IdentityPropertyName %> -like $<%= $IdentityPropertyName %> ) {
-                Write-Error "The <%= $Noun %> with Identity: $<%= $IdentityPropertyName %>, already exists."
-                return
-            }
-        }
 
+        <%- if (-not ([string]::IsNullOrWhiteSpace($IdentityPropertyName))) { -%>
+        if ( $currentSettings | Where-Object <%= $IdentityPropertyName %> -like $<%= $IdentityPropertyName %> ) {
+            Write-Error "The <%= $Noun %> with Identity: $<%= $IdentityPropertyName %>, already exists."
+            return
+        }
+        <%- } %>
         $newobject = <%= $newfunctionname %> @PSBoundParameters
         $currentSettings.Add($newobject)
     }
