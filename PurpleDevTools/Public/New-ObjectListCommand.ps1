@@ -70,6 +70,12 @@ function New-ObjectListCommand {
     )
     
     end {
+
+        ## check for eps module, if not error out.
+
+        if ( -not ( Get-Command -Name Invoke-EpsTemplate -ErrorAction SilentlyContinue ) ) {
+            Write-Error -Message "The EPS (Embbeded Powershell) module is needed for this template. Please install it with: Install-Module EPS" -ErrorAction Stop -TargetObject 'Invoke-EpsTemplate' -ErrorId 'PurpleDevTools.MissingEPSModule' -Category ResourceUnavailable
+        }
         
         # type should exist at this point so not doing any checks.
 
