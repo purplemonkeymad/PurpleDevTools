@@ -37,6 +37,22 @@ Create a template for comment based help from a loaded command.
 Good for post-testing, when you still have a command in a session.
 Run the command and then copy the output to the top of that function.
 
+### New-ObjectListCommand
+
+Template for managing a list of some specified type.
+Often in configuration you might want to create a list of items, and need commands to add/remove/set the values of these objects.
+This command creates a templated set of commands from the type and a code snip-it for storing the list to disk.
+
+Best types to use for this command are basic powershell classes that only have properties defined.
+These objects can be created by casing a hashtable to the given type.
+You can use more complex classes, but you will want to update the New verb command to create a constructor,
+and the Get verb command will expect a Deserialized.Typename to cast to the Type.
+
+It requires the EPS (Embedded Powershell) module for the template system.
+You can install it with the following command:
+
+    Install-Module EPS
+
 ## Author
 
 Purple Monkey Mad  
