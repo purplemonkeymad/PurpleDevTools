@@ -35,7 +35,11 @@ function ConvertTo-MarkdownTable {
 
         $null=$output.Append('|')
         foreach ($headersItem in $headers) {
-            $null=$output.Append(( $InputObject.psobject.properties[$headersItem].Value.toString() + '|' ))
+            $null=$output.Append($( 
+                if ($InputObject.psobject.properties[$headersItem].Value) {
+                    $InputObject.psobject.properties[$headersItem].Value.toString() + '|'
+                } else {'|'} 
+            ))
         }
         $null=$output.AppendLine()
 
