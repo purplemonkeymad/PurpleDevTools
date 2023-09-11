@@ -14,7 +14,8 @@ function Save-MarkdownHelp {
             } else {
                 throw "The value supplied to Path does not appear to be a valid path."
             }
-        })][string]$Path
+        })][string]$Path,
+        [switch]$UseReadmeAsIndexName
     )
     
     begin {
@@ -31,6 +32,8 @@ function Save-MarkdownHelp {
 
         $null = New-Item $Path -ItemType Directory -Force
 
+
+        $fullCommandList = [System.Collections.Generic.List[psobject]]@()
     }
     
     process {
@@ -118,11 +121,54 @@ function Save-MarkdownHelp {
                 continue
             }
 
+            $fullCommandList.add(
+                [pscustomobject]@{
+                    Name = $CommandHelp.Name
+                    FileName = $CommandHelp.Name + '.md'
+                    HelpObject = $CommandHelp
+                }
+            )
+
             $NewFileContent | Set-Content (Join-Path $Path "${SingleCommand}.md") -NoNewline
         }
     }
     
     end {
         
+        # only do the index if we have a path to save to
+        if (-not $Path){
+            return
+        }
+
+        # create a module index file in readme.md so
+        # that you get a bit of a home page for it.
+
+        $IndexContent = $(
+            New-MarkdownSection -Name $Module -Content $(
+                "This Module contains the following commands: "
+                ""
+                foreach ($ListItem in $fullCommandList) {
+                    "* [$($ListItem.Name)]($($ListItem.Filename))"
+                }
+                ""
+            )
+        )
+
+        # flatten new content
+        $IndexContent = $IndexContent -Join "`n"
+
+        # check for markdown double blank lines an remove them
+        while ($IndexContent -match '(\r?\n){3}') {
+            $IndexContent = $IndexContent -replace '(\r?\n){3}','$1$1'
+        }
+
+        $IndexName = if ($UseReadmeAsIndexName) {
+            "Readme.md"
+        } else {
+            "${Module}.md"
+        }
+
+        $IndexContent | Set-Content (Join-Path $Path $IndexName) -NoNewline
+
     }
 }
