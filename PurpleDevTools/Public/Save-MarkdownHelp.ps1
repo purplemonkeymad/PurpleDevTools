@@ -72,6 +72,14 @@ function Save-MarkdownHelp {
                 )
             )
 
+            # flatten new content
+            $NewFileContent = $NewFileContent -Join "`n"
+
+            # check for markdown double blank lines an remove them
+            while ($NewFileContent -match '(\r?\n){3}') {
+                $NewFileContent = $NewFileContent -replace '(\r?\n){3}','$1$1'
+            }
+
             if (-not $Path) {
                 Write-Output $NewFileContent
                 continue
