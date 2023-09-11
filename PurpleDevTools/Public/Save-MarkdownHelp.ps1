@@ -45,6 +45,17 @@ function Save-MarkdownHelp {
                     $CommandHelp.Synopsis
                     "" ## nl
 
+                    # add a toc style section to skip to headers:
+                    "|Skip To|"
+                    "|-------|"
+                    $TocItems = $(
+                        "[Syntax](#syntax)"
+                        if ($CommandHelp.Description){ "[Description](#description)" }
+                        "[Parameters](#parameters)"
+                    )
+                    "|$($TocItems -join ' ')|"
+                    ""
+
                     # syntax
                     New-MarkdownSection -Name Syntax -Content $(
                         $CommandHelp.Syntax.syntaxItem | Convert-HelpSyntaxToMarkdown
