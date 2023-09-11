@@ -90,7 +90,7 @@ function Save-MarkdownHelp {
                 continue
             }
 
-            $NewFileContent | Set-Content (Join-Path $Path "${SingleCommand}.md")
+            $NewFileContent | Set-Content (Join-Path $Path "${SingleCommand}.md") -NoNewline
         }
     }
     
