@@ -20,12 +20,14 @@ function New-MarkdownCodeBlock {
         if ($Style -eq 'Fences') {
             $Output = $(
                 if ($FenceLanguage) {
+                    '' # blank line for ln around fences
                     '```' + $FenceLanguage
                 } else {
                     '```'
                 }
                 $Content
                 '```'
+                ''
             )
         } else {
             $Output = $Content -split '\r?\n' | 
