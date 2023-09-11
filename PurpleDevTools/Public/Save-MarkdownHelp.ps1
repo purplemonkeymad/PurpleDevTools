@@ -61,7 +61,7 @@ function Save-MarkdownHelp {
 
                         "This command provides the following parameters: $(
                             foreach ($ParamName in $CommandHelp.parameters.parameter.name) {
-                                "[${ParamName}](#${ParamName})"
+                                "[${ParamName}](#$($ParamName.ToLower()))"
                             }
                         )"
                         "" # new line
