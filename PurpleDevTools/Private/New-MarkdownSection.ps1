@@ -24,6 +24,12 @@ function New-MarkdownSection {
                     '#'+$_
                 } else { $_ }
             }
+        
+        # check if there is a trailing nl and add one if not
+        if ($output[-1].length -ne 0) {
+            $output = $($output;"")
+        }
+        
         $output -join "`n"
     }
     
