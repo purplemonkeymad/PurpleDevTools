@@ -51,7 +51,9 @@ function Save-MarkdownHelp {
                     )
 
                     # longer description
-                    New-MarkdownSection -Name Description -Content ($CommandHelp.Description | Convert-HelpDescriptionToMarkdown)
+                    if ($CommandHelp.Description){
+                        New-MarkdownSection -Name Description -Content ($CommandHelp.Description | Convert-HelpDescriptionToMarkdown)
+                    }
 
                     # parameters
                     New-MarkdownSection -Name Parameters -Content $(
