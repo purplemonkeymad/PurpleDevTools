@@ -53,6 +53,7 @@ function Save-MarkdownHelp {
                         if ($CommandHelp.Description){ "[Description](#description)" }
                         "[Parameters](#parameters)"
                         if ($CommandHelp.examples.example) {"[Examples](#examples)" }
+                        if ($CommandHelp.relatedLinks.navigationlink.uri) { "[Links](#links)" }
                     )
                     "|$($TocItems -join ' ')|"
                     ""
@@ -86,6 +87,14 @@ function Save-MarkdownHelp {
                     if ($CommandHelp.examples.example) {
                         New-MarkdownSection -Name Examples -Content $(
                             $CommandHelp.examples.example | Convert-HelpExampleToMarkdown
+                        )
+                    }
+
+                    # links
+
+                    if ($CommandHelp.relatedLinks.navigationlink.uri) {
+                        New-MarkdownSection -Name Links -Content $(
+                            $CommandHelp.relatedLinks.navigationlink.uri
                         )
                     }
 
