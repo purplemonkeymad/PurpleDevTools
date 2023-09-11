@@ -14,8 +14,7 @@ function Save-MarkdownHelp {
             } else {
                 throw "The value supplied to Path does not appear to be a valid path."
             }
-        })][string]$Path,
-        [switch]$Force
+        })][string]$Path
     )
     
     begin {
