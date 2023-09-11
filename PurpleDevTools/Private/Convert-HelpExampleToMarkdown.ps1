@@ -19,9 +19,10 @@ function Convert-HelpExampleToMarkdown {
         
         $output = $(
             New-MarkdownSection -Name $InputObject.title -Content $(
-                New-MarkdownCodeBlock -Content $InputObject.Code
-
-                ""
+                if ($InputObject.Code) {
+                    New-MarkdownCodeBlock -Content $InputObject.Code
+                    ""
+                }
                 $InputObject.remarks | Convert-HelpDescriptionToMarkdown
             ) 
         )
