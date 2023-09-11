@@ -52,6 +52,7 @@ function Save-MarkdownHelp {
                         "[Syntax](#syntax)"
                         if ($CommandHelp.Description){ "[Description](#description)" }
                         "[Parameters](#parameters)"
+                        if ($CommandHelp.examples.example) {"[Examples](#examples)" }
                     )
                     "|$($TocItems -join ' ')|"
                     ""
@@ -82,9 +83,11 @@ function Save-MarkdownHelp {
 
                     #examples
 
-                    New-MarkdownSection -Name Examples -Content $(
-                        $CommandHelp.examples.example | Convert-HelpExampleToMarkdown
-                    )
+                    if ($CommandHelp.examples.example) {
+                        New-MarkdownSection -Name Examples -Content $(
+                            $CommandHelp.examples.example | Convert-HelpExampleToMarkdown
+                        )
+                    }
 
                 )
             )
