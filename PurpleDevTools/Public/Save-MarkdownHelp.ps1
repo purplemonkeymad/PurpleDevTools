@@ -80,6 +80,12 @@ function Save-MarkdownHelp {
                         $CommandHelp.Parameters.Parameter | Convert-HelpParameterToMarkdown
                     )
 
+                    #examples
+
+                    New-MarkdownSection -Name Examples -Content $(
+                        $CommandHelp.examples.example | Convert-HelpExampleToMarkdown
+                    )
+
                 )
             )
 
