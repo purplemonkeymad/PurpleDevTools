@@ -30,6 +30,8 @@ function Save-MarkdownHelp {
             }
         }
 
+        $null = New-Item $Path -ItemType Directory -Force
+
     }
     
     process {
