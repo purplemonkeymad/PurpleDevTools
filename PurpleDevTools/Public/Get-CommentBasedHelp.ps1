@@ -95,6 +95,7 @@ function Get-CommentBasedHelp {
                         if ($_.introduction){
                             $_.introduction.Text -join $DoubleNewLine
                         }
+                        '' # emtpy line between code and help
                         ($_.remarks.Text | where-Object {-not [string]::IsNullOrWhiteSpace($_) }) -join $DoubleNewLine
                     ) -join $NewLine
                 }
@@ -110,6 +111,7 @@ function Get-CommentBasedHelp {
                                 "<$($_.ParameterType.name)>"
                             }
                         ) -join ' '
+                        '' # emtpy line between code and help
                         "A description of how to use parameter set $($_.Name)"
                     ) -join $NewLine
                 }
