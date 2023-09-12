@@ -39,7 +39,6 @@ New-ObjectListCommand -Class [test] -Path .\ -ListPath '$env:programdata\test.js
 Uses the loaded type test as the base of the command templates. Function files will be saved to '.\',
 and the list save location will be '$env:programdata\test.json'.
 
-.Links
 
 #>
 function New-ObjectListCommand {
