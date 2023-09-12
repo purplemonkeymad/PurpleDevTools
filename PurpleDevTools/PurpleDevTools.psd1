@@ -12,7 +12,7 @@
 # RootModule = ''
 
 # Version number of this module.
-ModuleVersion = '0.1.7'
+ModuleVersion = '0.1.8'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -66,7 +66,8 @@ Description = 'Powershell tools for development of powershell modules.'
 # FormatsToProcess = @()
 
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-NestedModules = @('.\Private\Convert-HelpDescriptionToMarkdown.ps1', 
+NestedModules = @('.\Private\Convert-AboutFileToMarkdown.ps1', 
+               '.\Private\Convert-HelpDescriptionToMarkdown.ps1', 
                '.\Private\Convert-HelpExampleToMarkdown.ps1', 
                '.\Private\Convert-HelpParameterToMarkdown.ps1', 
                '.\Private\Convert-HelpSyntaxToMarkdown.ps1', 
@@ -103,6 +104,7 @@ AliasesToExport = @()
 
 # List of all files packaged with this module
 FileList = 'puild.json', 'PurpleDevTools.psd1', 
+               'Private\Convert-AboutFileToMarkdown.ps1', 
                'Private\Convert-HelpDescriptionToMarkdown.ps1', 
                'Private\Convert-HelpExampleToMarkdown.ps1', 
                'Private\Convert-HelpParameterToMarkdown.ps1', 
