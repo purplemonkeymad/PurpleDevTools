@@ -11,6 +11,7 @@ The name of the command to generate help for.
 
 .EXAMPLE
 Get-CommentBasedHelp -Name <String>
+
 Get the help comment for the command specified by the Name parameter.
 
 #>

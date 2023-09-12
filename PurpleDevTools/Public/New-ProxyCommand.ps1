@@ -11,10 +11,12 @@
 
 .EXAMPLE
     New-ProxyCommand -ProxiedCommand Get-Content -Name Get-ModifiedContent
+    
     Will output to the console the function definition to proxy the command Get-Content. The name of the function in the definition is Get-ModifiedContent.
 
 .EXAMPLE
     New-ProxyCommand -ProxiedCommand Get-Content -Name Get-ModifiedContent -OutFile .\myfile.ps1
+
     Will save to the specified file the function definition to proxy the command Get-Content. The name of the function in the definition is Get-ModifiedContent.
 
 .PARAMETER Command

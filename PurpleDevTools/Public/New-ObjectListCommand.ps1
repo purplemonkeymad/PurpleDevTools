@@ -35,6 +35,7 @@ ie remove- and set- will not exist if unspecified.
 
 .Example
 New-ObjectListCommand -Class [test] -Path .\ -ListPath '$env:programdata\test.json'
+
 Uses the loaded type test as the base of the command templates. Function files will be saved to '.\',
 and the list save location will be '$env:programdata\test.json'.
 
