@@ -11,6 +11,8 @@ The commands from this module, are to make or template those features in a simpl
 
 ## Commands
 
+Full help for all commands can be found in the [docs folder](docs/Readme.md).
+
 ### New-TypeFormatData
 
 For creating new `.format.ps1xml` files for the formatting engine.
