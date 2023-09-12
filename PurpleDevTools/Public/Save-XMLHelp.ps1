@@ -23,10 +23,12 @@ using namespace System.XML
 
 .EXAMPLE
     Save-XMLHelp -Command Get-Content -Path .\mymodule-help.xml
+    
     This will save the current help for the command Get-Content to the given file.
 
 .EXAMPLE
     Save-XMLHelp -Module MyModule -Path .\mymodule-help.xml
+
     This will save the help for all commands in the loaded module MyModule to the file. If the file is saved into the module, it should act as a valid Helpfile.
 #>
 function Save-XMLHelp {
