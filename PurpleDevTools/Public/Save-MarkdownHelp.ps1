@@ -165,12 +165,26 @@ function Save-MarkdownHelp {
 
         $IndexContent = $(
             New-MarkdownSection -Name $Module -Content $(
-                "This Module contains the following commands: "
-                ""
-                foreach ($ListItem in $fullCommandList) {
-                    "* [$($ListItem.Name)]($($ListItem.Filename))"
+
+                if ($ModuleObject) {
+                    # if we have module info we can add description etc.
+                    if ($ModuleObject.Description) {
+                        $ModuleObject.Description
+                    }
+
+                    if ($ModuleObject.PrivateData.PSData.ReleaseNotes) {
+                        New-MarkdownSection -Name ReleaseNotes -Content $ModuleObject.PrivateData.PSData.ReleaseNotes
+                    }
                 }
-                ""
+
+                New-MarkdownSection -Name Commands -Content $(
+                    "This Module contains the following commands: "
+                    ""
+                    foreach ($ListItem in $fullCommandList) {
+                        "* [$($ListItem.Name)]($($ListItem.Filename))"
+                    }
+                    ""
+                )
 
                 # if any about topics found, list them in a new section
                 if ($aboutList) {
