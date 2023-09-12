@@ -17,6 +17,20 @@ Get the help comment for the command specified by the Name parameter.
 function Get-CommentBasedHelp {
     [CmdletBinding()]
     param (
+        [ArgumentCompleter({
+            [OutputType([System.Management.Automation.CompletionResult])]
+            param(
+                [string] $CommandName,
+                [string] $ParameterName,
+                [string] $WordToComplete,
+                [System.Management.Automation.Language.CommandAst] $CommandAst,
+                [System.Collections.IDictionary] $FakeBoundParameters
+            )
+            
+            $CommandList = Get-Command "$wordToComplete*"
+            
+            return $CommandList.Name
+        })]
         [Parameter(Mandatory,ValueFromPipeline,ValueFromPipelineByPropertyName)]
         [Alias('CommandName')]
         [String]$Name
