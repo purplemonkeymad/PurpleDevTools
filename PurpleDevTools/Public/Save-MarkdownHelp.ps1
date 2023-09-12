@@ -1,6 +1,46 @@
 <#
 
+.Synopsis
 Save help text to a markdown format for display in github etc.
+
+.Description
+Converts the help system from Get-Help into a prettier markdown format.
+Help for commands need to already be written in a way get help can see them,
+either comment based or xml comments.
+
+.Parameter Command
+Command to get/save help for. Should take either a command object or name.
+
+.Parameter Module
+Get all command help for the specified module.
+This is better than piping in as if you specifiy Path then you will also get a module index.
+
+.Parameter Path
+Directory to save the markdown text to. File will be created as the command name.
+
+If using module option, then an index will also be created.
+
+.Parameter UseReadmeAsIndexName
+By default index is the module name, use this to use "Readme.md" as the same instead.
+
+.Example
+Save-MarkdownHelp -Command Get-Help
+
+Outputs a string for each command that contains the markdown contents of the specified
+command's help.
+
+.EXAMPLE
+Save-MarkdownHelp -Command Get-Help -Path ./docs/
+
+Exports the specified command's help infromation to the specified folder.
+It will create a single file called "Get-Help.md" containing the help.
+
+.Example
+Save-MarkdownHelp -Module MyModule -Path ./docs/
+
+Exports all help from the specified module into the folder docs under the current folder.
+This will be a collection of individual command helps, and a single MyModule.md with an index
+and description of the module.
 
 #>
 function Save-MarkdownHelp {
