@@ -140,6 +140,26 @@ function Save-MarkdownHelp {
             return
         }
 
+        # look for about_ pages in the module folder.
+
+        $ModuleObject = Get-Module $Module -ErrorAction SilentlyContinue
+        $aboutList = if ($ModuleObject) {
+            Get-ChildItem $ModuleObject.ModuleBase |
+                Where-Object Name -like "About_*.help.txt" | 
+                ForEach-Object {
+                    # trim the .help from the filename.
+                    $helpName = ($_.BaseName -replace '\.help$','')
+
+                    Convert-AboutFileToMarkdown -Path $_.FullName | 
+                        Set-Content (Join-Path $Path "${helpName}.md")
+                    
+                    [pscustomobject]@{
+                        Name = $helpName
+                        FileName = $helpName + '.md'
+                    }
+                }
+        }
+
         # create a module index file in readme.md so
         # that you get a bit of a home page for it.
 
@@ -151,6 +171,19 @@ function Save-MarkdownHelp {
                     "* [$($ListItem.Name)]($($ListItem.Filename))"
                 }
                 ""
+
+                # if any about topics found, list them in a new section
+                if ($aboutList) {
+                    New-MarkdownSection -Name MiscPages -Content $(
+                        "This Module contains the following generic help topics:"
+                        ""
+                        foreach ($ListItem in $aboutList) {
+                            "* [$($ListItem.Name)]($($ListItem.Filename))"
+                        }
+                        ""
+                    )
+                }
+
             )
         )
 
