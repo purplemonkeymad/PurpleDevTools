@@ -32,7 +32,35 @@ using namespace System.XML
 function Save-XMLHelp {
     [CmdletBinding(DefaultParameterSetName="Command")]
     param (
+        [ArgumentCompleter({
+            [OutputType([System.Management.Automation.CompletionResult])]
+            param(
+                [string] $CommandName,
+                [string] $ParameterName,
+                [string] $WordToComplete,
+                [System.Management.Automation.Language.CommandAst] $CommandAst,
+                [System.Collections.IDictionary] $FakeBoundParameters
+            )
+            
+            $CommandList = Get-Command "$wordToComplete*"
+            
+            return $CommandList.Name
+        })]
         [parameter(Mandatory,ValueFromPipeline,ParameterSetName="Command",Position=0)]$Command,
+        [ArgumentCompleter({
+            [OutputType([System.Management.Automation.CompletionResult])]
+            param(
+                [string] $CommandName,
+                [string] $ParameterName,
+                [string] $WordToComplete,
+                [System.Management.Automation.Language.CommandAst] $CommandAst,
+                [System.Collections.IDictionary] $FakeBoundParameters
+            )
+            
+            $ModuleList = Get-Module "$wordToComplete*"
+            
+            return $ModuleList.Name
+        })]
         [Parameter(Mandatory,ParameterSetName="Module")][string]$Module,
         [Parameter(Mandatory,Position=1)][ValidateScript({
             if (Test-Path -Path $_ -IsValid -PathType Leaf){
