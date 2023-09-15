@@ -42,6 +42,8 @@ Exports all help from the specified module into the folder docs under the curren
 This will be a collection of individual command helps, and a single MyModule.md with an index
 and description of the module.
 
+.LINK
+https://github.com/purplemonkeymad/PurpleDevTools/blob/master/docs/Save-MarkdownHelp.md
 #>
 function Save-MarkdownHelp {
     [CmdletBinding(DefaultParameterSetName="Command")]
