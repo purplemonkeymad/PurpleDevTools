@@ -32,6 +32,10 @@
     System.Management.Automation.FunctionInfo
 .OUTPUTS
     System.String
+
+.LINK
+https://github.com/purplemonkeymad/PurpleDevTools/blob/master/docs/New-ProxyCommand.md
+
 #>
 function New-ProxyCommand {
     [CmdletBinding(DefaultParameterSetName="TextOut")]

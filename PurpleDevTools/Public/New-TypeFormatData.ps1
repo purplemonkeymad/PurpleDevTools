@@ -62,6 +62,9 @@
     * [string] NoAutoSize    : Disables autosize for Wide view, if specified the formatting engine uses only the first row for sizing info instead of all items.
     * [property] Widecolumns : Sets the number of columns for Wide view. This also disables autosize, but allows display after the first row of items.
 
+.LINK
+https://github.com/purplemonkeymad/PurpleDevTools/blob/master/docs/New-TypeFormatData.md
+
 #>
 function New-TypeFormatData {
     [CmdletBinding()]
