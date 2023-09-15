@@ -14,6 +14,9 @@ Get-CommentBasedHelp -Name <String>
 
 Get the help comment for the command specified by the Name parameter.
 
+.link
+https://github.com/purplemonkeymad/PurpleDevTools/blob/master/docs/Get-CommentBasedHelp.md
+
 #>
 function Get-CommentBasedHelp {
     [CmdletBinding()]
@@ -121,8 +124,8 @@ function Get-CommentBasedHelp {
             # help links
             if ($help.relatedLinks.navigationlink) {
                 $(
-                    '.Links'
                     $help.relatedLinks.navigationlink | ForEach-Object {
+                        '.Link'
                         $_.uri  | where-Object {-not [string]::IsNullOrWhiteSpace($_) }
                     }
                 ) -join $NewLine
