@@ -164,9 +164,15 @@ function Save-MarkdownHelp {
 
                     # links
 
-                    if ($CommandHelp.relatedLinks.navigationlink.uri) {
+                    if ($CommandHelp.relatedLinks.navigationlink) {
                         New-MarkdownSection -Name Links -Content $(
-                            $CommandHelp.relatedLinks.navigationlink.uri
+                            $CommandHelp.relatedLinks.navigationlink | ForEach-Object {
+                                if ($_.uri) { $_.uri }
+                                if ($_.linkText -match '^[^\s]+-[^\s]+$' -or
+                                    $_.linkText -match '^about_' ) {
+                                    "[{0}]({1})" -f $_.linkText,($_.linkText + '.md')
+                                }
+                            }
                         )
                     }
 
