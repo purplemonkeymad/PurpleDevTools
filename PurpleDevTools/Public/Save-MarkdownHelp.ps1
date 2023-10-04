@@ -247,9 +247,11 @@ function Save-MarkdownHelp {
                     if ($ModuleObject.Description) {
                         $ModuleObject.Description
                     }
+                    "" #emtpy line before next section
 
                     if ($ModuleObject.PrivateData.PSData.ReleaseNotes) {
                         New-MarkdownSection -Name ReleaseNotes -Content $ModuleObject.PrivateData.PSData.ReleaseNotes
+                        "" #emtpy line before next section
                     }
                 }
 
