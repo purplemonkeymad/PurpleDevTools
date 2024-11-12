@@ -48,6 +48,8 @@ function New-ConfigurationCommand {
     and Set-ModuleConfigruation. The path to store the setting will be the result of the static
     method on the configration object.
 
+    .link
+    https://github.com/purplemonkeymad/PurpleDevTools/blob/master/docs/New-ConfigurationCommand.md
     #>
     [CmdletBinding()]
     param (
