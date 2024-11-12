@@ -7,12 +7,13 @@
   "ScriptsToProcessMask": [
     "\\\\ScriptsToProcess\\\\"
   ],
-  "SettingsVersion": 6,
+  "SettingsVersion": 7,
   "ResetBuildNumberOnRelease": true,
   "ResolveEPSOnInvoke": false,
   "OnBuildRepository": [],
   "OnMinorRepository": [],
   "OnMajorRepository": [],
   "CompileCsFiles": false,
-  "SingleFile": true
+  "SingleFile": true,
+  "UnsafeRead": false
 }
