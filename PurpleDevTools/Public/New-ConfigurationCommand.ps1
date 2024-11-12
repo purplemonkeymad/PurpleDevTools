@@ -44,7 +44,7 @@ function New-ConfigurationCommand {
         }
 
         if (-not $SettingPath) {
-            $SettingPath = (Join-Path $env:APPDATA $Noun)
+            $SettingPath = '$env:APPDATA',"$Noun.xml" -join '/'
         }
 
         ## check what type we were given as a path to the settings.
