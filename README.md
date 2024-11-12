@@ -50,7 +50,19 @@ These objects can be created by casing a hashtable to the given type.
 You can use more complex classes, but you will want to update the New verb command to create a constructor,
 and the Get verb command will expect a Deserialized.Typename to cast to the Type.
 
-It requires the EPS (Embedded Powershell) module for the template system.
+### New-ConfigurationCommand
+
+Template for creating a configuration commands from a specified type.
+This is a way to get a static configuration that is saved to disk.
+
+Works best on basic powershell classes, with only properties.
+Each property on the target class will be a parameter on the set command.
+
+Remember to include your class definition in your module if needed.
+
+## Notes on Dependencies
+
+Some commands require the EPS (Embedded Powershell) module for the template system.
 You can install it with the following command:
 
     Install-Module EPS
