@@ -14,7 +14,6 @@ function New-ConfigurationCommand {
         $Path,
 
         [Parameter()]
-        [string]
         $SettingPath,
 
         [Parameter()]
@@ -45,7 +44,17 @@ function New-ConfigurationCommand {
         }
 
         if (-not $SettingPath) {
-            $SettingPath = "'" + (Join-Path $env:APPDATA $Noun) + "'"
+            $SettingPath = (Join-Path $env:APPDATA $Noun)
+        }
+
+        ## check what type we were given as a path to the settings.
+        ## scriptblocks need to be wrapped in a sub-expression
+        ## while anything else is probably a string so needs quotes
+
+        $SettingPath = if ($SettingPath -is [scriptblock]) {
+            '$(' + $SettingPath.ToString() + ')'
+        } else {
+            "'" + $SettingPath + "'"
         }
 
         # now we need to generate the variables for the templates
