@@ -38,7 +38,8 @@ function <%= $Setfunctionname %> {
     process {
         foreach ($Parameter in $PSBoundParameters.GetEnumerator()) {
             if ($CurrentSettings.psobject.properties.name -contains $Parameter.Key) {
-                if ($CurrentSettings.($Parameter.Key).GetType().IsArray -and 
+                if ($CurrentSettings.($Parameter.Key) -and
+                    $CurrentSettings.($Parameter.Key).GetType().IsArray -and 
                     $Parameter.Value -is [hashtable]) {
                     $changed = $false
                     # hash table add or remove
