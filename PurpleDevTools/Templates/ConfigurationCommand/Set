@@ -1,0 +1,74 @@
+function <%= $Setfunctionname %> {
+    <#
+    .SYNOPSIS
+        Update the configuration values for <%= $Noun %>.
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+<% #  generic help parameter for each param
+        $Parameters | Each { -%>
+    .PARAMETER <%= $_.name %>
+        Specify the setting <%= $_.name %> of type <%= $_.propertytype.fullname %>.
+<% } -%>
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        <%= $setfunctionname %>
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    [CmdletBinding()]
+    param (
+<%
+        # generate a param block. 
+        $Parameters | Each {
+        -%>
+            # Parameter: <%= $_.name %>
+            [Parameter(ValueFromPipelineByPropertyName)]
+            [<%=
+            # we are using the full name here as it's hard to know any types before hand.
+            $_.propertytype.fullname
+            %>]
+            $<%= $_.name %><% } -Join ",`n" -%>
+
+    )
+    begin {
+        $CurrentSettings = <%= $Getfunctionname %>
+    }
+    process {
+        foreach ($Parameter in $PSBoundParameters.GetEnumerator()) {
+            if ($CurrentSettings.psobject.properties.name -contains $Parameter.Key) {
+                if ($CurrentSettings.($Parameter.Key) -and
+                    $CurrentSettings.($Parameter.Key).GetType().IsArray -and 
+                    $Parameter.Value -is [hashtable]) {
+                    $changed = $false
+                    # hash table add or remove
+                    if (([hashtable]$Parameter.Value).ContainsKey('Add')) {
+                        $CurrentSettings.($Parameter.key) = $(
+                            $CurrentSettings.($Parameter.key)
+                            $Parameter.Value.Add
+                        )
+                        $changed = $true
+                    }
+                    if (([hashtable]$Parameter.Value).ContainsKey('Remove')) {
+                        $CurrentSettings.($Parameter.key) = $CurrentSettings.($Parameter.key) |
+                            Where-Object { $_ -notin $Parameter.Value.Remove }
+                        $changed = $true
+                    }
+                    # skip to next if we have made changes.
+                    if ($changed) { continue }
+                }
+                $CurrentSettings.($Parameter.key) = $Parameter.Value
+            }
+        }
+    }
+    
+    end {
+        $SettingsPath = <%= $SettingPath %>
+        if (-not (Test-Path $SettingsPath)){
+            [void](New-Item -Path (Split-Path -Path $SettingsPath -Parent) -ItemType Directory -Force)
+        }
+
+        $CurrentSettings | Export-Clixml $SettingsPath
+    }
+}

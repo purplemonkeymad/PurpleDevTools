@@ -7,6 +7,7 @@ Powershell tools for development of powershell modules.
 This Module contains the following commands:
 
 * [Get-CommentBasedHelp](Get-CommentBasedHelp.md)
+* [New-ConfigurationCommand](New-ConfigurationCommand.md)
 * [New-ObjectListCommand](New-ObjectListCommand.md)
 * [New-ProxyCommand](New-ProxyCommand.md)
 * [New-TypeFormatData](New-TypeFormatData.md)
