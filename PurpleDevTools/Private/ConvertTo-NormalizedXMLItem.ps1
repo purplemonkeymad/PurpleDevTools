@@ -31,7 +31,7 @@ function ConvertTo-NormalizedXMLItem {
 
             if ($InputObject.containsKey('Text')) {
                 return (
-                    New-XMLElement -Name Text -Value $InputObject.Text
+                    New-XMLElement -Name Text -InnerText $InputObject.Text
                 )
             }
 
@@ -40,7 +40,7 @@ function ConvertTo-NormalizedXMLItem {
                 $children = $(
                     foreach ($property in 'LeftIndent','RightIndent','FirstLineHanging','FirstLineIndent') {
                         if ($InputObject.containsKey($property)) {
-                            New-XMLElement -Name $property -Value ([int]$InputObject.$property)
+                            New-XMLElement -Name $property -InnerText ([int]$InputObject.$property)
                         }
                     }
                     New-XMLElement -Name CustomItem -Children $(
