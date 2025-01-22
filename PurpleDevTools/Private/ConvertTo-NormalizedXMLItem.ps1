@@ -13,6 +13,10 @@ function ConvertTo-NormalizedXMLItem {
                     New-XMLElement -Name NewLine
                 )
             }
+
+            return (
+                New-XMLElement -Name Text -InnerText $InputObject
+            )
         }
 
         # check for a hashtable with the name in it ie
