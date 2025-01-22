@@ -57,7 +57,7 @@ function ConvertTo-NormalizedXMLItem {
         if ($InputObject -is [scriptblock]){
             return (
                 New-XMLElement -Name ExpressionBinding -Children $(
-                    New-XMLElement -Name ScriptBlock -Value $InputObject
+                    New-XMLElement -Name ScriptBlock -InnerText $InputObject
                 )
             )
         }
