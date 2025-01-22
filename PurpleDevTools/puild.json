@@ -7,7 +7,7 @@
   "ScriptsToProcessMask": [
     "\\\\ScriptsToProcess\\\\"
   ],
-  "SettingsVersion": 7,
+  "SettingsVersion": 8,
   "ResetBuildNumberOnRelease": true,
   "ResolveEPSOnInvoke": false,
   "OnBuildRepository": [],
@@ -15,5 +15,8 @@
   "OnMajorRepository": [],
   "CompileCsFiles": false,
   "SingleFile": true,
-  "UnsafeRead": false
+  "UnsafeRead": false,
+  "ExcludeAllMask": [
+    "(^|\\\\)\\.git\\\\"
+  ]
 }
