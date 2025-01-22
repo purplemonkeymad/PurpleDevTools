@@ -19,7 +19,7 @@
 
 .PARAMETER View
 
-    Specify the Formatting view that will be used. Table, List or Wide.
+    Specify the Formatting view that will be used. Table, List, Wide or Custom.
 
 .PARAMETER Properties
 
@@ -36,6 +36,16 @@
     * Alignment    : The alignment of the Value in the specified Column, eg Left, Right (Table Only.)
     * Condition    : A script block to determine if the List property should be shown, return true to show the property (List Only.)
     * Format       : Formats the property value using the given format string. (Wide Only.)
+    
+    Custom format has it's own list of properties, but support strings as exact text and scriptblocks:
+
+    * Text    : Alternative Text format specifier. (Must be only property.)
+    * NewLine : New line Character, does not need to have a value but must exist to be detected (Must be only property.)
+    * Frame   : A section that can contain more items, specified as the value.
+    * LeftIndent : Indentation of the Frame block in number of characters.
+    * RightIndent : Indentation of the Frame block in number of characters.
+    * FirstLineIndent : Indentation of the first line of the frame block in number of characters.
+    * FirstLineHanging : Right Indentation of the first line of the frame block in number of characters.
 
     If the View type was set to Wide, then only first property is used. If you want multiple properties in a Wide view, use a script block to produce the string you want to see.
 
@@ -73,7 +83,7 @@ function New-TypeFormatData {
         [string[]]$TypeName,
 
         [parameter(Mandatory,ValueFromPipelineByPropertyName,Position=1)]
-        [validateset('Table','List','Wide')]
+        [validateset('Table','List','Wide','Custom')]
         [string]$View,
 
         [parameter(Mandatory,ValueFromPipelineByPropertyName,Position=2)]
@@ -299,6 +309,19 @@ function New-TypeFormatData {
                                         }
                                     }
                                 )
+                            )
+                        )
+                    )
+                }
+                # custom style a bit strange as there are lots of different types.
+                # we can use a ht to always get the type, but to make things
+                # easier we might need to do some guessing
+                'custom' {
+                    $customProperties = $Properties | ConvertTo-NormalizedXMLItem
+                    New-XMLElement -Document $XML -Name CustomControl -Children $(
+                        New-XMLElement -Name CustomEntries -Children $(
+                            New-XMLElement -Name CustomEntry -Children $(
+                                New-XMLElement -Name CustomItem -Children $customProperties
                             )
                         )
                     )
