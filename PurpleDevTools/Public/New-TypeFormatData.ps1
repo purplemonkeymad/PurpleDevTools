@@ -116,7 +116,7 @@ function New-TypeFormatData {
             )).OwnerDocument
         }
         # if we don't have view defs then we need a new xml doc.
-        if ($XML -and (-not $XML.SelectNodes('//Configuration/ViewDefinitions'))){
+        if ($XML -and (-not $XML.SelectNodes('/Configuration/ViewDefinitions').Count)){
             # we have xml but not a valid schema
             $PSCmdlet.ThrowTerminatingError(
                 ( New-Object System.Management.Automation.ErrorRecord -ArgumentList @(
@@ -331,7 +331,7 @@ function New-TypeFormatData {
 
         $newNodes | ForEach-Object { [void]$viewElement.AppendChild($_) }
 
-        [void]$XML.SelectNodes('//Configuration/ViewDefinitions').AppendChild( $XML.ImportNode($viewElement , $true) )
+        [void]$XML.SelectNodes('/Configuration/ViewDefinitions').AppendChild( $XML.ImportNode($viewElement , $true) )
     }
     
     end {
