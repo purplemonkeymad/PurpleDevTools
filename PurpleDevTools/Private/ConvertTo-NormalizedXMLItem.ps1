@@ -2,7 +2,8 @@ function ConvertTo-NormalizedXMLItem {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline)]
-        $InputObject
+        $InputObject,
+        [switch]$NoFrames
     )
     process {
         # if we have a string that should be a text component
@@ -37,6 +38,10 @@ function ConvertTo-NormalizedXMLItem {
 
             if ($InputObject.containsKey('Frame')) {
 
+                if ($NoFrames) {
+                    Write-Error "Frames in the custom style cannot be nested." -TargetObject $InputObject -ErrorAction Stop
+                }
+
                 $children = $(
                     foreach ($property in 'LeftIndent','RightIndent','FirstLineHanging','FirstLineIndent') {
                         if ($InputObject.containsKey($property)) {
@@ -44,7 +49,8 @@ function ConvertTo-NormalizedXMLItem {
                         }
                     }
                     New-XMLElement -Name CustomItem -Children $(
-                        $InputObject.Frame | ConvertTo-NormalizedXMLItem
+                        # frames cannot be nested so make sure we don't create one in the recursion.
+                        $InputObject.Frame | ConvertTo-NormalizedXMLItem -NoFrames
                     )
                 )
                 
