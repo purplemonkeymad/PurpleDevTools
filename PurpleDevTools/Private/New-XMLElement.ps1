@@ -8,6 +8,7 @@ function New-XMLElement {
         [string]$Namespace = '',
         [hashtable]$Attributes,
         [string]$Innertext,
+        [XMLChildrenTransformer()]
         [System.xml.XmlElement[]]$Children,
         [xml]$Document
     )
