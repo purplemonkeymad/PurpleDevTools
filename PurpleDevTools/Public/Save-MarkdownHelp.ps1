@@ -280,7 +280,7 @@ function Save-MarkdownHelp {
         )
 
         # flatten new content
-        $IndexContent = $IndexContent -Join "`n"
+        $IndexContent = $IndexContent -Join [System.Environment]::NewLine
 
         # check for markdown double blank lines an remove them
         while ($IndexContent -match '(\r?\n){3}') {

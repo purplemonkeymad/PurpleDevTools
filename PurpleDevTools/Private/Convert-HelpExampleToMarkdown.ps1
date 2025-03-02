@@ -27,7 +27,7 @@ function Convert-HelpExampleToMarkdown {
             ) 
         )
 
-        $output -join "`n"
+        $output -join [System.Environment]::NewLine
     }
     
     end {

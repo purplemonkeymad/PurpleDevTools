@@ -30,7 +30,7 @@ function New-MarkdownSection {
             $output = $($output;"")
         }
         
-        $output -join "`n"
+        $output -join [System.Environment]::NewLine
     }
     
     end {
