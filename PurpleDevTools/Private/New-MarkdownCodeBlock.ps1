@@ -34,7 +34,7 @@ function New-MarkdownCodeBlock {
                 ForEach-Object -Begin {""} -Process { "    " + $_ } #begin add a blank line to start of code area
         }
 
-        $Output -join "`n"
+        $Output -join [System.Environment]::NewLine
 
     }
     
